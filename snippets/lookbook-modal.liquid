@@ -3,7 +3,7 @@
   assign image = image | default: section.settings.image
 %}
 
-<div id="lookbookModal" class="modal">
+<div id="lookbookModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="lookbookModalTitle">
   <div class="modal-content" style="background-color: {{ background_color }};">
     {% comment %} close button - mobile only {% endcomment %}
     <button class="close-button">
@@ -45,7 +45,7 @@
 
             <div class="product-actions">
               {% if product.variants.size > 1 %}
-                <select id="variant-select-{{ product.id }}" class="variant-select">
+                <select id="variant-select-{{ product.id }}" class="variant-select" tabindex="0">
                   {% for variant in product.variants %}
                     <option value="{{ variant.id }}">{{ variant.title }}</option>
                   {% endfor %}
@@ -336,12 +336,18 @@
   function openModal() {
     document.getElementById('lookbookModal').style.display = 'flex';
     document.body.style.overflow = 'hidden';
+
+    document.getElementById('lookbookModal').setAttribute('aria-modal', 'true');
+    document.getElementById('lookbookModal').setAttribute('aria-labelledby', 'lookbookModalTitle');
   }
 
   function closeModal() {
     console.log('closeModal');
     document.getElementById('lookbookModal').style.display = 'none';
     document.body.style.overflow = 'auto';
+
+    document.getElementById('lookbookModal').removeAttribute('aria-modal');
+    document.getElementById('lookbookModal').removeAttribute('aria-labelledby');
   }
 
   async function fetchCartDrawerHtml() {
